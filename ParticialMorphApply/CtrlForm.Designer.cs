@@ -80,7 +80,7 @@
             this.buttonRun.Name = "buttonRun";
             this.buttonRun.Size = new System.Drawing.Size(200, 50);
             this.buttonRun.TabIndex = 3;
-            this.buttonRun.Text = "選択頂点に適用";
+            this.buttonRun.Text = "フォームの選択モーフに追加";
             this.buttonRun.UseVisualStyleBackColor = true;
             this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
             // 
@@ -121,7 +121,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(516, 255);
             this.Name = "CtrlForm";
-            this.Text = "部分的モーフ適用変形";
+            this.Text = "選択頂点のモーフオフセットを別の頂点モーフに追加する";
             this.Activated += new System.EventHandler(this.CtrlForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CtrlForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMorphRatio)).EndInit();

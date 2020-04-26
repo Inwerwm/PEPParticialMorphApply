@@ -125,7 +125,7 @@ namespace ParticialMorphApply
             if (float.TryParse(textBoxMorphRatio.Text, out num))
             {
                 Ratio = num;
-                trackBarMorphRatio.Value = Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum);
+                trackBarMorphRatio.Value = Math.Max(Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum), 0);
             }
         }
 
@@ -140,7 +140,7 @@ namespace ParticialMorphApply
             textBoxSelectedNodeName.Text = treeViewMorph.SelectedNode.Level == 1 ? treeViewMorph.SelectedNode.Name : "";
             SelectedMorphID = treeViewMorph.SelectedNode.Level < 1 ? -1 : pmx.Morph.IndexOf((IPXMorph)treeViewMorph.SelectedNode.Tag);
             textBoxMorphRatio.Text = Ratio.ToString("F3");
-            trackBarMorphRatio.Value = Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum); ;
+            trackBarMorphRatio.Value = Math.Max(Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum), 0);
         }
 
         private void CtrlForm_Activated(object sender, EventArgs e)
@@ -157,7 +157,7 @@ namespace ParticialMorphApply
 
             Ratio = treeViewMorph.SelectedNode == null ? 0 : args.Host.Connector.View.TransformView.MorphValue;
             textBoxMorphRatio.Text = Ratio.ToString("F3");
-            trackBarMorphRatio.Value = Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum);
+            trackBarMorphRatio.Value = Math.Max(Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum), 0);
             */
         }
 
@@ -168,8 +168,24 @@ namespace ParticialMorphApply
 
         private void buttonRun_Click(object sender, EventArgs e)
         {
+            if (args.Host.Connector.Form.SelectedExpressionIndex < 0)
+            {
+                MessageBox.Show("フォームから追加先の頂点モーフを選択してください。");
+                return;
+            }
+            if(SelectedMorphID < 0)
+            {
+                MessageBox.Show($"追加元頂点モーフが選択されていません。{Environment.NewLine}プラグインのウィンドウ左側のツリービューからモーフを選択してください。{Environment.NewLine}選択しているにも関わらずこのエラーが表示されている場合は再読込してから再びモーフを選択してください。");
+            }
             pmx = args.Host.Connector.Pmx.GetCurrentState();
             var selectedVertices = args.Host.Connector.View.PmxView.GetSelectedVertexIndices().Select(i => pmx.Vertex[i]).ToArray();
+            var selectedMorph = pmx.Morph[args.Host.Connector.Form.SelectedExpressionIndex];
+            if (selectedMorph.Kind != MorphKind.Vertex)
+            {
+                MessageBox.Show($"{selectedMorph.Name}は頂点モーフではありません。{Environment.NewLine}頂点モーフを選択してください。");
+                return;
+            }
+
             var offsets = pmx.Morph[SelectedMorphID].Offsets.Select(o => o as IPXVertexMorphOffset).ToArray();
 
             foreach (var o in offsets)
@@ -177,11 +193,14 @@ namespace ParticialMorphApply
                 // オフセットの頂点が選択頂点に含まれていなければ
                 if (!selectedVertices.Contains(o.Vertex))
                     continue;
-
-                o.Vertex.Position += o.Offset * Ratio;
+                var newOffset = PEStaticBuilder.Pmx.VertexMorphOffset();
+                newOffset.Vertex = o.Vertex;
+                newOffset.Offset = o.Offset * Ratio;
+                selectedMorph.Offsets.Add(newOffset);
+                //o.Vertex.Position += o.Offset * Ratio;
             }
 
-            Utility.Update(args.Host.Connector, pmx, PmxUpdateObject.Vertex);
+            Utility.Update(args.Host.Connector, pmx, PmxUpdateObject.Morph);
             MessageBox.Show("完了");
         }
     }

@@ -16,7 +16,7 @@ namespace ParticialMorphApply
         {
             get
             {
-                return "部分的モーフ適用変形";
+                return "選択頂点のモーフオフセットを別の頂点モーフに追加";
             }
         }
 
@@ -32,7 +32,7 @@ namespace ParticialMorphApply
         {
             get
             {
-                return "選択頂点を頂点モーフによって変形する";
+                return "選択頂点のモーフオフセットを別の頂点モーフに追加する";
             }
         }
 
@@ -41,7 +41,7 @@ namespace ParticialMorphApply
             get
             {
                 // boot時実行, プラグインメニューへの登録, メニュー登録名
-                return new PEPluginOption(false, true, "部分的モーフ適用変形");
+                return new PEPluginOption(false, true, "選択頂点のモーフオフセットを別の頂点モーフに追加");
             }
         }
 
