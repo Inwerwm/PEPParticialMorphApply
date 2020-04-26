@@ -142,7 +142,7 @@ namespace ParticialMorphApply
             weights.Sort((v, w) => w.weight.CompareTo(v.weight));
 
             //大きい方から4つまでを残す
-            weights.Take(4);
+            weights = weights.Take(4).ToList();
 
             //正規化
             var sum = weights.Select(w => w.weight).Sum();
