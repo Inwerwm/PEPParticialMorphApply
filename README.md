@@ -1,0 +1,2 @@
+# PEPParticialMorphApply
+モーフの部分的適用を行うPMX Editorプラグイン
