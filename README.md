@@ -1,2 +1,2 @@
 # PEPParticialMorphApply
-モーフの部分的適用を行うPMX Editorプラグイン
+選択頂点のモーフオフセットを別の頂点モーフに追加する
