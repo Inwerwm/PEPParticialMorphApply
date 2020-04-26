@@ -16,31 +16,9 @@ namespace ParticialMorphApply
         TreeNode nodeEye;
         TreeNode nodeLip;
         TreeNode nodeOther;
-        private float ratio;
-        private int selectedMorphID;
 
-        private int SelectedMorphID
-        {
-            get => selectedMorphID;
-            set
-            {
-                selectedMorphID = value;
-                args.Host.Connector.View.TransformView.SelectedMorphIndex = selectedMorphID;
-            }
-        }
-        private float Ratio
-        {
-            get => ratio;
-            set
-            {
-                ratio = value;
-                if (SelectedMorphID != -1)
-                {
-                    args.Host.Connector.View.TransformView.SelectedMorphIndex = SelectedMorphID;
-                    args.Host.Connector.View.TransformView.MorphValue = ratio;
-                }
-            }
-        }
+        private int SelectedMorphID { get; set; }
+        private float Ratio { get; set; }
 
         public CtrlForm(IPERunArgs input)
         {
@@ -64,11 +42,6 @@ namespace ParticialMorphApply
         {
             pmx = args.Host.Connector.Pmx.GetCurrentState();
             makeMorphTree();
-            if (!args.Host.Connector.View.TransformView.Visible)
-                args.Host.Connector.View.TransformView.Visible = true;
-            if (args.Host.Connector.View.TransformView.WindowState == FormWindowState.Minimized)
-                args.Host.Connector.View.TransformView.WindowState = FormWindowState.Normal;
-            args.Host.Connector.View.TransformView.MorphChecker = true;
         }
 
         private void makeMorphTree()
@@ -166,13 +139,13 @@ namespace ParticialMorphApply
         {
             textBoxSelectedNodeName.Text = treeViewMorph.SelectedNode.Level == 1 ? treeViewMorph.SelectedNode.Name : "";
             SelectedMorphID = treeViewMorph.SelectedNode.Level < 1 ? -1 : pmx.Morph.IndexOf((IPXMorph)treeViewMorph.SelectedNode.Tag);
-            Ratio = args.Host.Connector.View.TransformView.MorphValue;
             textBoxMorphRatio.Text = Ratio.ToString("F3");
             trackBarMorphRatio.Value = Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum); ;
         }
 
         private void CtrlForm_Activated(object sender, EventArgs e)
         {
+            /*
             args.Host.Connector.View.TransformView.MorphChecker = true;
             SelectedMorphID = args.Host.Connector.View.TransformView.SelectedMorphIndex;
             treeViewMorph.SelectedNode = FindNodeByID(SelectedMorphID);
@@ -184,7 +157,8 @@ namespace ParticialMorphApply
 
             Ratio = treeViewMorph.SelectedNode == null ? 0 : args.Host.Connector.View.TransformView.MorphValue;
             textBoxMorphRatio.Text = Ratio.ToString("F3");
-            trackBarMorphRatio.Value = Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum); ;
+            trackBarMorphRatio.Value = Math.Min((int)(Ratio * 1000), trackBarMorphRatio.Maximum);
+            */
         }
 
         private void buttonReload_Click(object sender, EventArgs e)
