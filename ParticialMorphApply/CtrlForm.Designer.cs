@@ -121,7 +121,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(516, 255);
             this.Name = "CtrlForm";
-            this.Text = "CtrlForm";
+            this.Text = "部分的モーフ適用変形";
             this.Activated += new System.EventHandler(this.CtrlForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CtrlForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMorphRatio)).EndInit();
